@@ -1,13 +1,24 @@
 import 'package:blog_app/core/theme/app_theme.dart';
-import 'package:blog_app/init_dependency.dart';
+import 'package:blog_app/init_dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'core/common/cubits/app_user/app_user_cubit.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initDependencies();
+
   runApp(MultiBlocProvider(
-    providers: [],
+    providers: [
+      BlocProvider(
+        create: (_) => serviceLocator<AppUserCubit>(),
+      ),
+      BlocProvider(
+        create: (_) => serviceLocator<AuthBloc>(),
+      ),
+    ],
     child: const MyApp(),
   ));
 }
@@ -31,7 +42,9 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Blog App',
       theme: AppTheme.darkThemeMode,
-      home: const Scaffold(),
+      home: Scaffold(
+        body: Container(),
+      ),
     );
   }
 }
